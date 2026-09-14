@@ -1,43 +1,29 @@
-// shapes and cluster scaling
-// ferron_dewitte_practicum2
+// conditions
+// ferron_dewitte_practicum3
 
-float baseX = random(100, 300);
-float baseY = random(100, 300);
+PVector screenSize = new PVector(540, 350);
 
-int bobbingScale = 30;
-float bobbingSpeed = random(0.05f, 0.2f);
+Player player = new Player();
+ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 
-float objectScale = random(15, 50);
-
-private int _time = 0;
+private int _timer;
 
 void setup(){
- size(500, 400);
- background(0, 20, 40);
+ size(540, 350);
+ fill(0);
 }
 
 void draw(){
- _time++;
- float scaleSine = scaledSine(10, bobbingSpeed);
- float scale = objectScale + scaleSine;
- float bobbingOffsetY = scaledSine(bobbingScale, bobbingSpeed);
- background(0, 20, 40);
+ _timer++;
+ if(_timer % 50 == 0){
+   clusters.add(new Cluster(0));
+ }
+  
+ background(120, 130, 125);
  
+ for(int i = 0; i < clusters.size(); i++){
+  clusters.get(i).update(); 
+ }
  
- fill(70, 70, 250);
- circle(baseX - scaleSine, baseY + bobbingOffsetY, scale);
- centeredRect(baseX + objectScale, baseY + bobbingOffsetY, scale);
- circle(baseX + objectScale*2 + scaleSine, baseY + bobbingOffsetY, scale);
-}
-
-float scaledSine(float scale, float speed){
-  return scale * sin(_time * speed);
-}
-
-float scaledCosine(float scale, float speed){
-  return scale * cos(_time * speed);
-}
-
-void centeredRect(float centerX, float centerY, float scale){
-  rect(centerX - (scale * 0.5f), centerY - (scale * 0.5f), scale, scale);
+ player.update();
 }
