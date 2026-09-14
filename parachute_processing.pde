@@ -18,9 +18,10 @@ void setup(){
  fill(0);
 }
 
+// timer ticking, cluster updating/rendering, and player input/rendering
 void draw(){
  _timer++;
- if(_timer % 50 == 0){
+ if(_timer % ticksToNextSpawn == 0){
    clusters.add(new Cluster());
  }
   

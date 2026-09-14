@@ -1,9 +1,11 @@
 class Player{
   int movementSpeed = 10;
-  int position = int(_screenSize.x) / 2;
+  float position = int(_screenSize.x) / 2;
   
   void update(){    
-    
+    var dist = mouseX - position;
+    var playerSpeed = dist / 10f;
+    position += playerSpeed;
   }
   
   void render(){
