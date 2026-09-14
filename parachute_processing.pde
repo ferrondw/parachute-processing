@@ -1,8 +1,13 @@
-// conditions
-// ferron_dewitte_practicum3
+// les4: functions
+// ferrondw
 
-PVector screenSize = new PVector(540, 350);
+// feedback practicumopdracht 4 - makkelijk aan te passen (eliza voets)
 
+int ticksToNextSpawn = 50; // how many frames it awaits before spawning a new cluster (running at 20fps)
+
+
+
+PVector _screenSize = new PVector(540, 350);
 Player player = new Player();
 ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 
@@ -16,14 +21,22 @@ void setup(){
 void draw(){
  _timer++;
  if(_timer % 50 == 0){
-   clusters.add(new Cluster(0));
+   clusters.add(new Cluster());
  }
   
  background(120, 130, 125);
  
  for(int i = 0; i < clusters.size(); i++){
-  clusters.get(i).update(); 
+  var cluster = clusters.get(i);
+  cluster.update();
+  cluster.render();
+  
+  if(cluster.touchingBottom()){
+   cluster.onDestroy();
+   clusters.remove(cluster);
+  }
  }
  
  player.update();
+ player.render();
 }

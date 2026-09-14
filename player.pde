@@ -1,12 +1,12 @@
 class Player{
   int movementSpeed = 10;
-  int position = int(screenSize.x) / 2;
+  int position = int(_screenSize.x) / 2;
   
   void update(){    
-    render();
+    
   }
   
   void render(){
-    centeredRect(position, screenSize.y - 50, 40);
+    centeredRect(position, _screenSize.y - 50, 40);
   }
 }
