@@ -1,5 +1,15 @@
-// shapes and cluster testing
-// ferron_dewitte_practicum1
+// shapes and cluster scaling
+// ferron_dewitte_practicum2
+
+float baseX = random(100, 300);
+float baseY = random(100, 300);
+
+int bobbingScale = 30;
+float bobbingSpeed = random(0.05f, 0.2f);
+
+float objectScale = random(15, 50);
+
+private int _time = 0;
 
 void setup(){
  size(500, 400);
@@ -7,31 +17,27 @@ void setup(){
 }
 
 void draw(){
+ _time++;
+ float scaleSine = scaledSine(10, bobbingSpeed);
+ float scale = objectScale + scaleSine;
+ float bobbingOffsetY = scaledSine(bobbingScale, bobbingSpeed);
  background(0, 20, 40);
  
- // white squares
- fill(255);
- for(int i = 0; i < 3; i++){
-   rect(i * 30, i * 30, 30, 30);
- }
  
- // grey rects
- fill(130);
- rect(50, 250, 30, 30);
- rect(50 + 30, 250, 50, 30);
- 
- // dark blue circle-box-circle
  fill(70, 70, 250);
- circle(350, 300, 40);
- rect(350 + (40/2), 300 - (40/2), 40, 40);
- circle(350 + 40 + (2 * 40 / 2), 300, 40);
- // 350 + 40 + (2 * 40 / 2) is base + square offset + (2 circle offsets from center * half of radius)
- 
- // cyan circles
- fill(20, 120, 250);
- circle(250, 150, 40);
- float angle1 = 45;
- float angle2 = 170;
- circle(250 + (cos(angle1) * 40), 150 + (sin(angle1) * 40), 40);
- circle(250 + (cos(angle1) * 40) + (cos(angle2) * 40), 150 + (sin(angle1) * 40) + (sin(angle2) * 40), 40);
+ circle(baseX - scaleSine, baseY + bobbingOffsetY, scale);
+ centeredRect(baseX + objectScale, baseY + bobbingOffsetY, scale);
+ circle(baseX + objectScale*2 + scaleSine, baseY + bobbingOffsetY, scale);
+}
+
+float scaledSine(float scale, float speed){
+  return scale * sin(_time * speed);
+}
+
+float scaledCosine(float scale, float speed){
+  return scale * cos(_time * speed);
+}
+
+void centeredRect(float centerX, float centerY, float scale){
+  rect(centerX - (scale * 0.5f), centerY - (scale * 0.5f), scale, scale);
 }
