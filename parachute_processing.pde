@@ -6,7 +6,7 @@
 int ticksToNextSpawn = 50; // how many frames it awaits before spawning a new cluster (running at 20fps)
 
 
-
+// internals, do not touch!
 PVector _screenSize = new PVector(540, 350);
 Player player = new Player();
 ArrayList<Cluster> clusters = new ArrayList<Cluster>();
@@ -15,11 +15,13 @@ private int _timer;
 
 void setup(){
  size(540, 350);
+ textAlign(CENTER);
  fill(0);
 }
 
 // timer ticking, cluster updating/rendering, and player input/rendering
 void draw(){
+  fill(0);
  _timer++;
  if(_timer % ticksToNextSpawn == 0){
    clusters.add(new Cluster());

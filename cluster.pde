@@ -1,15 +1,20 @@
 class Cluster{
   
-  // cluster settings
- int objectSize = 30; // width of a single block in pixels
- int spawnPadding = 60; // padding from the left/right of the screen where clusters cannot spawn
- PVector velocityXMinMax = new PVector(4, 10); // min and max of the velocity's X axis, can be randomly negated
- PVector velocityYMinMax = new PVector(2, 4); // min and max of the velocity's Y axis or its 'gravity'
- float bobbingSpeed = 0.2f; // how fast the object should bob using a sine wave
- float bobbingSizeMultiplier = 4; // how much to multiply the output of the sine wave to make the bobbing bigger/smaller
+ // cluster settings
+ int objectSize = 30; // size (width/height) of a single block in the cluster in pixels
+ int spawnPadding = 60; // padding in pixels from the left/right of the screen where clusters cannot spawn
+ 
+ int minHorizontalVelocity = 4; // min and max of the horizontal velocity, can be randomly negated (so it should always remain positive)
+ int maxHorizontalVelocity = 10;
+ 
+ int minVerticalVelocity = 2; // min and max of the vertical velocity (should also remain positive, otherwise objects will rise up)
+ int maxVerticalVelocity = 4;
+ 
+ float bobbingSpeed = 0.2f; // how fast the object should bob (scale in and out)
+ float bobbingSizeMultiplier = 4; // how much to multiple the scaling of the bobbing, thus makes the resulting cluster bob in and out more dramatically
  
  
- 
+ // internals, do not touch!
  private int _timer;
  private float _scale;
  private PVector _position = new PVector();
@@ -17,7 +22,7 @@ class Cluster{
  
  public Cluster(){
    _position = new PVector(random(spawnPadding, _screenSize.x - spawnPadding), -objectSize * 0.5f);
-   _velocity = new PVector(random(velocityXMinMax.x, velocityXMinMax.y) * randomNegate(), random(velocityYMinMax.x, velocityYMinMax.y));
+   _velocity = new PVector(random(minHorizontalVelocity, maxHorizontalVelocity) * randomNegate(), random(minVerticalVelocity, maxVerticalVelocity));
  }
  
  // update internal states for the timer, position, and flips the cluster when touching an edge
@@ -27,9 +32,8 @@ class Cluster{
    
    _position = calculatePosition();
    
-   if(touchingSide()){
-    _velocity.x *= -1; 
-   }
+   if(touchingLeftWall()) _velocity.x = abs(_velocity.x);
+   if(touchingRightWall()) _velocity.x = -abs(_velocity.x);
  }
  
  // exclusively renders the cluster, no other logic is applied or changed here
@@ -60,8 +64,12 @@ class Cluster{
   return int(objectSize + sin(_timer * bobbingSpeed) * bobbingSizeMultiplier);
  }
  
- boolean touchingSide(){
-   return _position.x < _scale * 1.5f || _position.x > _screenSize.x - _scale * 1.5f;
+ boolean touchingLeftWall(){
+   return _position.x < _scale * 1.5f;
+ }
+ 
+ boolean touchingRightWall(){
+  return  _position.x > _screenSize.x - _scale * 1.5f; 
  }
  
  boolean touchingBottom(){
