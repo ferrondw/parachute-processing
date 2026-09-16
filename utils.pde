@@ -3,6 +3,10 @@ void centeredRect(float centerX, float centerY, float scale){
   rect(centerX - (scale * 0.5f), centerY - (scale * 0.5f), scale, scale);
 }
 
+void centeredImage(PImage img, float centerX, float centerY, float scale){
+    image(img, centerX - (scale * 0.5f), centerY - (scale * 0.5f), scale, scale);
+}
+
 // randomly returns -1 or 1
 int randomNegate(){
  return (floor(random(2)) * 2 - 1); 
